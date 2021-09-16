@@ -13,4 +13,9 @@ ln -s ~/dotfiles/vim ~/.vim
 ln -s ~/dotfiles/vimrc ~/.vimrc
 ln -s ~/dotfiles/shell ~/.shell
 ln -s ~/dotfiles/tmux.conf ~/.tmux.conf
+ln -s ~/dotfiles/nvim ~/.config/nvim
 
+echo "To install neovim"
+echo "curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
+echo "chmod u+x nvim.appimage"
+echo "./nvim.appimage"
