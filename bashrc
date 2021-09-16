@@ -1,3 +1,4 @@
+set -o vi
 # Functions
 source ~/.shell/functions.sh
 
