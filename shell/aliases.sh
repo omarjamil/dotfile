@@ -1,11 +1,11 @@
-alias git="GIT_SSH_COMMAND=\"ssh -i ~/.ssh/id_ed255519_ojgit\" git $@"
+alias ,git="GIT_SSH_COMMAND=\"ssh -i ~/.ssh/id_ed255519_ojgit\" git $@"
 # Stop from sleeping for an hour
 alias caffeine="caffeinate -u -t 3600"
 alias isca="ssh oj244@login.isca.ex.ac.uk"
 alias lrt="ls -lrt"
 alias d='dirs -v | head -10'
-alias grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
-alias paraview='/Applications/ParaView-5.9.1.app/Contents/MacOS/paraview'
+alias ,grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+alias paraview='/Applications/ParaView-5.10.0.app/Contents/MacOS/paraview'
 # Use colors in coreutils utilities output
 alias ls='ls -GF'
 # ls aliases
@@ -19,6 +19,16 @@ alias mv='mv -i'
 
 # git related aliases
 alias gag='git exec ag'
+alias e='/Applications/Emacs.app/Contents/MacOS/Emacs-arm64-12'
+alias enw='/Applications/Emacs.app/Contents/MacOS/Emacs-arm64-12 -nw'
+alias ec='/Applications/Emacs.app/Contents/MacOS/bin-arm64-12/emacsclient'
+alias emacs_server='/Applications/Emacs.app/Contents/MacOS/Emacs-arm64-12 --daemon'
+alias ekill='/Applications/Emacs.app/Contents/MacOS/bin-arm64-12/emacsclient  -e "(save-buffers-kill-emacs)"'
+alias condad='conda deactivate'
+alias condaa='conda activate $1'
+alias projects='cd ~/home/Projects/'
+alias arm='env /usr/bin/arch -arm64 /bin/zsh --login'
+alias intel='env /usr/bin/arch -x86_64 /bin/zsh --login'
 
 # Update dotfiles
 dfu() {

@@ -11,13 +11,14 @@ Plug 'junegunn/fzf.vim'
 
 " Plugin outside ~/.vim/plugged with post-update hook
 "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
 Plug 'haorenW1025/completion-nvim'
-Plug 'nvim-treesitter/completion-treesitter'
+" Plug 'nvim-treesitter/completion-treesitter'
 " Initialize plugin system
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'preservim/nerdtree'
 Plug 'haya14busa/incsearch.vim'
+"Plug 'neovim/nvim-lspconfig'
 call plug#end()
 "------------------
 " Syntax and indent

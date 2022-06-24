@@ -18,7 +18,12 @@ conda_path_remove() {
 
 conda_init() {
     PATH_BACK=$PATH
-    . $HOME/.shell/conda_init.sh
+    . $HOME/.shell/mamba_init.sh 
+}
+
+mamba_init() {
+    PATH_BACK=$PATH
+    . $HOME/.shell/mamba_init.sh
 }
 
 isca_vim() {
@@ -57,3 +62,16 @@ there() {
 ncless() {
     ncdump $1 | less
 }
+
+lg()
+{
+    export LAZYGIT_NEW_DIR_FILE=~/.lazygit/newdir
+
+    lazygit "$@"
+
+    if [ -f $LAZYGIT_NEW_DIR_FILE ]; then
+            cd "$(cat $LAZYGIT_NEW_DIR_FILE)"
+            rm -f $LAZYGIT_NEW_DIR_FILE > /dev/null
+    fi
+}
+
