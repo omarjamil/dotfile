@@ -1,20 +1,9 @@
-
-(add-to-list 'load-path "~/.emacs.d/vendor/use-package")
-;; Define and initialise package repositories
-(require 'package)
-;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("elpa" . "https://elpa.gnu.org/packages/") t)
-(package-initialize)
-
-;; use-package to simplify the config file
-(unless (package-installed-p 'use-package)
-(package-refresh-contents)
-(package-install 'use-package))
-(require 'use-package)
-(setq use-package-always-ensure 't)
-;; this needs to be loaded before evil
+(straight-use-package 'el-patch)
+(straight-use-package 'use-package)
 
 (use-package evil
+  :straight t
+  
   :init
   (setf evil-want-C-u-scroll t)
   (setf evil-want-fine-undo t)
@@ -51,6 +40,8 @@
   )
 
 (use-package avy
+  :straight t
+
   :config
   (setf avy-background t)
   (setf avy-all-windows nil)
@@ -69,6 +60,7 @@
 
 ;; this needs to be loaded after avy
 (use-package evil-easymotion
+  :straight t
 
   :config
   (let ((prefix "SPC"))
@@ -83,6 +75,8 @@
 
 ;; this needs to be loaded after evil
 (use-package neotree
+  :straight t
+
   :config
   (add-hook 'neotree-mode-hook
             (lambda ()
@@ -90,6 +84,7 @@
 
 ;; this needs to be loaded after evil and neotree
 (use-package evil-leader
+  :straight t
 
   :config
   (global-evil-leader-mode)
@@ -115,15 +110,23 @@
     "t" 'racket-test))
 
 (use-package company
+  :straight t
+
   :config
   (global-company-mode))
 
-(use-package math-symbol-lists)
+(use-package math-symbol-lists
+  :straight t
+  )
 
 ;; this needs to be loaded after company and math-symbol-lists
-(use-package company-math)
+(use-package company-math
+  :straight t
+  )
 
 (use-package linum-relative
+  :straight t
+
   :init
   (global-linum-mode t)
   ;; add padding next to line number
@@ -144,22 +147,32 @@
 
 ;; this needs to be loaded after evil
 (use-package evil-surround
+  :straight t
+
   :config
   (global-evil-surround-mode 1))
 
 ;; org-mode
-(use-package org-loaddefs
-  :load-path "~/.emacs.d/lisp/src/org-mode/lisp")
+(use-package org
+  :straight t)
 
-(load (expand-file-name "~/.quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
+;; (use-package org-loaddefs
+;;   :straight t
+;;   :load-path "~/.emacs.d/straight/build/org/"
+;;   )
 
-(use-package magit)
+;(load (expand-file-name "~/.quicklisp/slime-helper.el"))
+;(setq inferior-lisp-program "sbcl")
+
+(use-package magit
+  :straight t)
 
 ;(add-to-list 'load-path "~/.emacs.d/lisp/src/")
 ;(require 'julia-repl)
 
 (use-package julia-mode
+  :straight t
+
   :config
   (add-hook 'julia-mode-hook 'julia-math-mode)
   ;(add-hook 'julia-mode-hook 'julia-repl-mode)
@@ -169,6 +182,7 @@
 
 ;; Example configuration for Consult
 (use-package consult
+
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c h" . consult-history)
@@ -285,9 +299,11 @@
 )
 
 (use-package eglot
-  :ensure t)
+  :straight t)
 
 (use-package yasnippet
+  :straight t 
+
   :config
   (setq yas-snippet-dirs '("~/.emacs.d/snippets"
                            "~/.emacs.d/snippet_collection"))
