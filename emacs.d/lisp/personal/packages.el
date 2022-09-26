@@ -1,6 +1,21 @@
 (straight-use-package 'el-patch)
 (straight-use-package 'use-package)
 
+;; Make ESC quit prompts
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+(use-package general
+  :straight t
+  :config
+  (general-create-definer rune/leader-keys
+    :keymaps '(normal insert visual emacs)
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+
+  (rune/leader-keys
+    "t"  '(:ignore t :which-key "toggles")
+    "tt" '(counsel-load-theme :which-key "choose theme")))
+
 (use-package evil
   :straight t
   
@@ -58,6 +73,7 @@
        '(avy-lead-face-0 ((t (:foreground "#af8700" :weight bold)))) ; yellow
        '(avy-lead-face-2 ((t (:foreground "#af8700" :weight bold))))))) ; yellow
 
+
 ;; this needs to be loaded after avy
 (use-package evil-easymotion
   :straight t
@@ -109,20 +125,80 @@
     "r" 'racket-run
     "t" 'racket-test))
 
-(use-package company
-  :straight t
 
+(use-package command-log-mode
+  :straight t)
+
+(use-package all-the-icons
+  :straight t)
+
+(use-package doom-modeline
+  :straight t
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 15)))
+
+(use-package which-key
+  :straight t
+  :init (which-key-mode)
+  :diminish which-key-mode
   :config
-  (global-company-mode))
+  (setq which-key-idle-delay 1))
 
-(use-package math-symbol-lists
+(use-package ivy
   :straight t
-  )
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (ivy-mode 1))
 
-;; this needs to be loaded after company and math-symbol-lists
-(use-package company-math
+(use-package ivy-rich
   :straight t
-  )
+  :after ivy
+  :init
+  (ivy-rich-mode 1))
+
+(use-package counsel
+  :straight t
+  :bind (("C-M-j" . 'counsel-switch-buffer)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history))
+  :config
+  (counsel-mode 1))
+
+(use-package helpful
+  :straight t
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
+
+(use-package hydra
+  :straight t)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
+
+(rune/leader-keys
+  "ts" '(hydra-text-scale/body :which-key "scale text"))
 
 (use-package linum-relative
   :straight t
@@ -145,161 +221,7 @@
   (setf linum-relative-format "%3s "
         linum-relative-current-symbol ""))
 
-;; this needs to be loaded after evil
-(use-package evil-surround
-  :straight t
-
-  :config
-  (global-evil-surround-mode 1))
-
-;; org-mode
 (use-package org
-  :straight t)
-
-;; (use-package org-loaddefs
-;;   :straight t
-;;   :load-path "~/.emacs.d/straight/build/org/"
-;;   )
-
-;(load (expand-file-name "~/.quicklisp/slime-helper.el"))
-;(setq inferior-lisp-program "sbcl")
-
-(use-package magit
-  :straight t)
-
-;(add-to-list 'load-path "~/.emacs.d/lisp/src/")
-;(require 'julia-repl)
-
-(use-package julia-mode
-  :straight t
-
-  :config
-  (add-hook 'julia-mode-hook 'julia-math-mode)
-  ;(add-hook 'julia-mode-hook 'julia-repl-mode)
-  (add-hook 'inferior-julia-mode-hook 'julia-math-mode)
-  )
-
-
-;; Example configuration for Consult
-(use-package consult
-  :straight t
-
-  ;; Replace bindings. Lazily loaded due by `use-package'.
-  :bind (;; C-c bindings (mode-specific-map)
-         ("C-c h" . consult-history)
-         ("C-c m" . consult-mode-command)
-         ("C-c b" . consult-bookmark)
-         ("C-c k" . consult-kmacro)
-         ;; C-x bindings (ctl-x-map)
-         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-         ;; Custom M-# bindings for fast register access
-         ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-         ("C-M-#" . consult-register)
-         ;; Other custom bindings
-         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ("<help> a" . consult-apropos)            ;; orig. apropos-command
-         ;; M-g bindings (goto-map)
-         ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-         ("M-g g" . consult-goto-line)             ;; orig. goto-line
-         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-         ("M-g m" . consult-mark)
-         ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)
-         ("M-g I" . consult-imenu-multi)
-         ;; M-s bindings (search-map)
-         ("M-s f" . consult-find)
-         ("M-s F" . consult-locate)
-         ("M-s g" . consult-grep)
-         ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
-         ("M-s l" . consult-line)
-         ("M-s L" . consult-line-multi)
-         ("M-s m" . consult-multi-occur)
-         ("M-s k" . consult-keep-lines)
-         ("M-s u" . consult-focus-lines)
-         ;; Isearch integration
-         ("M-s e" . consult-isearch-history)
-         :map isearch-mode-map
-         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-         ("M-s L" . consult-line-multi))           ;; needed by consult-line to detect isearch
-
-  ;; Enable automatic preview at point in the *Completions* buffer.
-  ;; This is relevant when you use the default completion UI,
-  ;; and not necessary for Vertico, Selectrum, etc.
-  :hook (completion-list-mode . consult-preview-at-point-mode)
-
-  ;; The :init configuration is always executed (Not lazy)
-  :init
-
-  ;; Optionally configure the register formatting. This improves the register
-  ;; preview for `consult-register', `consult-register-load',
-  ;; `consult-register-store' and the Emacs built-ins.
-  (setq register-preview-delay 0
-        register-preview-function #'consult-register-format)
-
-  ;; Optionally tweak the register preview window.
-  ;; This adds thin lines, sorting and hides the mode line of the window.
-  (advice-add #'register-preview :override #'consult-register-window)
-
-  ;; Optionally replace `completing-read-multiple' with an enhanced version.
-  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-
-  ;; Configure other variables and modes in the :config section,
-  ;; after lazily loading the package.
-  :config
-
-  ;; Optionally configure preview. The default value
-  ;; is 'any, such that any key triggers the preview.
-  ;; (setq consult-preview-key 'any)
-  ;; (setq consult-preview-key (kbd "M-."))
-  ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
-  ;; For some commands and buffer sources it is useful to configure the
-  ;; :preview-key on a per-command basis using the `consult-customize' macro.
-  (consult-customize
-   consult-theme
-   :preview-key '(:debounce 0.2 any)
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
-   :preview-key (kbd "M-."))
-
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
-
-  ;; Optionally make narrowing help available in the minibuffer.
-  ;; You may want to use `embark-prefix-help-command' or which-key instead.
-  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-
-  ;; Optionally configure a function which returns the project root directory.
-  ;; There are multiple reasonable alternatives to chose from.
-  ;;;; 1. project.el (project-roots)
-  (setq consult-project-root-function
-        (lambda ()
-          (when-let (project (project-current))
-            (car (project-roots project)))))
-  ;;;; 2. projectile.el (projectile-project-root)
-  ;; (autoload 'projectile-project-root "projectile")
-  ;; (setq consult-project-root-function #'projectile-project-root)
-  ;;;; 3. vc.el (vc-root-dir)
-  ;; (setq consult-project-root-function #'vc-root-dir)
-  ;;;; 4. locate-dominating-file
-  ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))
-)
-
-(use-package eglot
   :straight t)
 
 (use-package yasnippet
@@ -313,3 +235,110 @@
   ;;                                  (yas-activate-extra-mode 'fundamental-mode))))
                                  
   (yas-global-mode 1))
+
+(defun efs/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :straight t
+  :commands (lsp lsp-deferred)
+  :hook
+  (lsp-mode . efs/lsp-mode-setup)
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :straight t
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+
+(use-package lsp-treemacs
+  :straight t
+  :after lsp)
+
+(use-package lsp-ivy
+  :straight t)
+
+(use-package lsp-pyright
+  :straight t
+  :after (python lsp-mode)
+  :hook
+  (python-mode-hook . (lambda ()
+            (require 'lsp-pyright) (lsp))))
+
+(use-package python-mode
+  :hook (python-mode . lsp-deferred))
+
+(use-package typescript-mode
+  :straight t
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2))
+
+(use-package company
+  :straight t
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+         ("<tab>" . company-complete-selection))
+        (:map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
+
+(use-package company-box
+  :straight t
+  :hook (company-mode . company-box-mode))
+
+(use-package evil-nerd-commenter
+  :straight t
+  :bind ("M-/" . evilnc-comment-or-uncomment-lines))
+
+(use-package rainbow-delimiters
+  :straight t
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package magit
+  :straight t
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+(use-package evil-magit
+  :straight t
+  :after magit)
+
+(use-package markdown-mode
+  :straight t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown"))
+
+;; Flyspell
+;; Spell checking for text (requires aspell)
+(use-package flyspell
+  :straight t
+  :init
+  (setq ispell-program-name "aspell")
+  :hook
+  ((text-mode-hook . flyspell-mode)
+   (prog-mode-hook . flyspell-prog-mode))
+  :bind
+  ("<f7>" . flyspell-word)
+  ("M-<f7>" . flyspell-buffer))
+
+;; Flycheck
+;; Spell checking for code
+(use-package flycheck
+  :straight t
+  :init
+  (setq flycheck-highlighting-mode 'symbols
+    flycheck-indication-mode 'left-fringe
+    flycheck-standard-error-navigation t)
+  :hook
+  (prog-mode-hook . flycheck-mode))
+

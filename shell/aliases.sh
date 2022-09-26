@@ -19,7 +19,7 @@ alias mv='mv -i'
 
 # git related aliases
 alias gag='git exec ag'
-alias e='/Applications/Emacs.app/Contents/MacOS/Emacs-arm64-12'
+alias e='/Applications/Emacs.app/Contents/MacOS/Emacs-arm64-11'
 alias enw='/Applications/Emacs.app/Contents/MacOS/Emacs-arm64-12 -nw'
 alias ec='/Applications/Emacs.app/Contents/MacOS/bin-arm64-12/emacsclient'
 alias emacs_server='/Applications/Emacs.app/Contents/MacOS/Emacs-arm64-12 --daemon'
@@ -29,6 +29,7 @@ alias condaa='conda activate $1'
 alias projects='cd ~/home/Projects/'
 alias arm='env /usr/bin/arch -arm64 /bin/zsh --login'
 alias intel='env /usr/bin/arch -x86_64 /bin/zsh --login'
+alias ubu='ssh oj244@192.168.64.4'
 
 # Update dotfiles
 dfu() {

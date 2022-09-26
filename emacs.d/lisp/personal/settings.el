@@ -36,24 +36,3 @@
 (setq ispell-program-name "aspell")
 
 (electric-indent-mode +1)
-
-;; Eglot
-
-(defvar oj-default-pyright "/Users/oj244/mambaforge/envs/p39/bin/pyright"
-  "define a default pyls to be used")
-
-(defun oj/python-eglot-enable ()
-  "set variables and hook for eglot python IDE"
-  (interactive)
-  (setq company-backends
-        (cons 'company-capf
-              (remove 'company-capf company-backends)))
-  (add-to-list 'eglot-server-programs
-               `(python-mode ,oj-default-pyright))
-  (add-hook 'python-mode-hook 'eglot-ensure))
-
-(defun oj/python-eglot-disable ()
-  "remove hook for eglot python"
-  (interactive)
-  (remove-hook 'python-mode-hook 'eglot-ensure))
-

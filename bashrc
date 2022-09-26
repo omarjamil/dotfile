@@ -40,3 +40,4 @@ if [ -f ~/.bashrc_local_after ]; then
 fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+. "$HOME/.cargo/env"
