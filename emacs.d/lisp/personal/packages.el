@@ -267,11 +267,8 @@
   :straight t
   :after (python lsp-mode)
   :hook
-  (python-mode-hook . (lambda ()
+  (python-mode . (lambda ()
             (require 'lsp-pyright) (lsp))))
-
-(use-package python-mode
-  :hook (python-mode . lsp-deferred))
 
 (use-package typescript-mode
   :straight t
