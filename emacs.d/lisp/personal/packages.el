@@ -51,6 +51,10 @@
   (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
   (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
   (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
+  (define-key evil-visual-state-map (kbd "M-<down>") (concat ":m '>+1" (kbd "RET") "gv=gv"))
+  (define-key evil-visual-state-map (kbd "M-<up>")   (concat ":m '<-2" (kbd "RET") "gv=gv"))
+  (define-key evil-normal-state-map (kbd "M-<down>") (concat ":m +1" (kbd "RET") "=="))
+  (define-key evil-normal-state-map (kbd "M-<up>")   (concat ":m -2" (kbd "RET") "=="))
   ; (define-key evil-normal-state-map ";" 'buffer-menu)
   )
 
@@ -96,7 +100,8 @@
   :config
   (add-hook 'neotree-mode-hook
             (lambda ()
-              (define-key evil-motion-state-local-map (kbd "RET") 'neotree-enter))))
+              (define-key evil-motion-state-local-map (kbd "RET") 'neotree-enter)))
+  (global-set-key [f8] 'neotree-toggle))
 
 ;; this needs to be loaded after evil and neotree
 (use-package evil-leader
@@ -132,10 +137,10 @@
 (use-package all-the-icons
   :straight t)
 
-(use-package doom-modeline
-  :straight t
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
+;; (use-package doom-modeline
+;;   :straight t
+;;   :init (doom-modeline-mode 1)
+;;   :custom ((doom-modeline-height 15)))
 
 (use-package which-key
   :straight t
@@ -224,44 +229,42 @@
 (use-package org
   :straight t)
 
-(use-package yasnippet
-  :straight t 
+;; (use-package yasnippet
+;;   :straight t 
 
-  :config
-  (setq yas-snippet-dirs '("~/.emacs.d/snippets"
-                           "~/.emacs.d/snippet_collection"))
-  ;; (yas-global-mode 1)
-  ;; (add-hook 'yas-minor-mode-hook (lambda ()
-  ;;                                  (yas-activate-extra-mode 'fundamental-mode))))
-                                 
-  (yas-global-mode 1))
+;;   :config
+;;   (setq yas-snippet-dirs '("~/.emacs.d/snippets"
+;;                            "~/.emacs.d/snippet_collection"))
+;;   ;; (yas-global-mode 1)
+;;   (add-hook 'yas-minor-mode-hook (lambda ()
+;;                                    (yas-activate-extra-mode 'fundamental-mode))))
 
-(defun efs/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
+;; (defun efs/lsp-mode-setup ()
+;;   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+;;   (lsp-headerline-breadcrumb-mode))
 
-(use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :straight t
-  :commands (lsp lsp-deferred)
-  :hook
-  (lsp-mode . efs/lsp-mode-setup)
-  :config
-  (lsp-enable-which-key-integration t))
+;; (use-package lsp-mode
+;;   :init
+;;   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+;;   :straight t
+;;   :commands (lsp lsp-deferred)
+;;   :hook
+;;   (lsp-mode . efs/lsp-mode-setup)
+;;   :config
+;;   (lsp-enable-which-key-integration t))
 
-(use-package lsp-ui
-  :straight t
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
+;; (use-package lsp-ui
+;;   :straight t
+;;   :hook (lsp-mode . lsp-ui-mode)
+;;   :custom
+;;   (lsp-ui-doc-position 'bottom))
 
-(use-package lsp-treemacs
-  :straight t
-  :after lsp)
+;; (use-package lsp-treemacs
+;;   :straight t
+;;   :after lsp)
 
-(use-package lsp-ivy
-  :straight t)
+;; (use-package lsp-ivy
+;;   :straight t)
 
 (use-package lsp-pyright
   :straight t
@@ -270,6 +273,27 @@
   (python-mode . (lambda ()
             (require 'lsp-pyright) (lsp))))
 
+;; Provide drop-down completion.
+(use-package company
+  :straight t
+  :defer t
+  ;; Use company with text and programming modes.
+  :hook ((python-mode . company-mode)
+         (text-mode . company-mode)
+         (prog-mode . company-mode)))
+
+(use-package eglot
+  :straight t
+  :bind (:map eglot-mode-map
+              ("C-c l a" . eglot-code-actions)
+              ("C-c l r" . eglot-rename)
+              ("C-c l f" . eglot-format)
+              ("C-c l d" . eldoc))
+  :defer t
+  :config
+  (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
+  :hook (python-mode . eglot-ensure))
+
 (use-package typescript-mode
   :straight t
   :mode "\\.ts\\'"
@@ -277,21 +301,21 @@
   :config
   (setq typescript-indent-level 2))
 
-(use-package company
-  :straight t
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :bind (:map company-active-map
-         ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
+;; (use-package company
+;;   :straight t
+;;   :after lsp-mode
+;;   :hook (lsp-mode . company-mode)
+;;   :bind (:map company-active-map
+;;          ("<tab>" . company-complete-selection))
+;;         (:map lsp-mode-map
+;;          ("<tab>" . company-indent-or-complete-common))
+;;   :custom
+;;   (company-minimum-prefix-length 1)
+;;   (company-idle-delay 0.0))
 
-(use-package company-box
-  :straight t
-  :hook (company-mode . company-box-mode))
+;; (use-package company-box
+;;   :straight t
+;;   :hook (company-mode . company-box-mode))
 
 (use-package evil-nerd-commenter
   :straight t
@@ -339,41 +363,9 @@
   :hook
   (prog-mode-hook . flycheck-mode))
 
-;; Org mode
-(defun efs/org-font-setup ()
-  ;; Replace list hyphen with dot
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-  ;; Set faces for heading levels
-  (dolist (face '((org-level-1 . 1.2)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.05)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
-
-  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
-
-(defun efs/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (visual-line-mode 1))
-
 (use-package org
   :straight t
-  :hook (org-mode . efs/org-mode-setup)
+  ;:hook (org-mode . efs/org-mode-setup)
   :config
   (setq org-ellipsis " ▾")
 
@@ -408,15 +400,7 @@
 
   (define-key global-map (kbd "C-c j")
     (lambda () (interactive) (org-capture nil "jj")))
-
-(efs/org-font-setup))
-
-(use-package org-bullets
-  :straight t
-  :after org
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+)
 
 (org-babel-do-load-languages
   'org-babel-load-languages
@@ -425,8 +409,54 @@
 
 (push '("conf-unix" . conf-unix) org-src-lang-modes)
 
-(require 'org-tempo)
+;; (require 'org-tempo)
 
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("py" . "src python"))
+(add-to-list 'org-structure-template-alist '("py" . "src python :result output"))
+
+(use-package web-mode
+  :straight t
+  )
+
+(use-package docker-tramp
+  :straight t
+  )
+
+(use-package eshell
+  :straight t
+  :config
+  (setq eshell-prompt-regexp "^[^#$\n]*[#$] "
+      eshell-prompt-function
+      (lambda nil
+        (concat
+	 "[" (user-login-name) "@" (system-name) " "
+	 (if (string= (eshell/pwd) (getenv "HOME"))
+	     "~" (eshell/basename (eshell/pwd)))
+	 "]"
+	 (if (= (user-uid) 0) "# " "$ "))))
+  )
+  
+(use-package semantic
+  :config
+  (setq semantic-default-submodes
+      '(;; Perform semantic actions during idle time
+        global-semantic-idle-scheduler-mode
+        ;; Use a database of parsed tags
+        global-semanticdb-minor-mode
+        ;; Decorate buffers with additional semantic information
+        global-semantic-decoration-mode
+        ;; Highlight the name of the function you're currently in
+        global-semantic-highlight-func-mode
+        ;; show the name of the function at the top in a sticky
+        global-semantic-stickyfunc-mode
+        ;; Generate a summary of the current tag when idle
+        global-semantic-idle-summary-mode
+        ;; Show a breadcrumb of location during idle time
+        global-semantic-idle-breadcrumbs-mode
+        ;; Switch to recently changed tags with `semantic-mrub-switch-tags',
+        ;; or `C-x B'
+        global-semantic-mru-bookmark-mode))
+  :hook
+  (python-mode . semantic-mode))
+  

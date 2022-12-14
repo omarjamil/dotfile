@@ -33,6 +33,9 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(setq ispell-program-name "aspell")
+(global-set-key "\C-ch" help-map)
 
 (electric-indent-mode +1)
+
+(setq column-number-mode t)
+
