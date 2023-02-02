@@ -209,7 +209,7 @@
   :straight t
 
   :init
-  (global-linum-mode t)
+  (linum-relative-global-mode t)
   ;; add padding next to line number
   (setf linum-format
         (lambda (line)
@@ -419,9 +419,9 @@
   :straight t
   )
 
-(use-package docker-tramp
-  :straight t
-  )
+;; (use-package docker-tramp
+;;   :straight t
+;;   )
 
 (use-package eshell
   :straight t

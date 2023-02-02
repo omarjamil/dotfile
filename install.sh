@@ -1,8 +1,8 @@
 
 cd 
 # Backup existing configs
-#mkdir config_backup
-#mv .gitconfig .git_ignore .emacs .emacs.d .bashrc .bash_profile .vimrc .vim .bash config_backup
+mkdir config_backup
+mv .gitconfig .git_ignore .emacs .emacs.d .bashrc .bash_profile .vimrc .vim .bash config_backup
 # Use this command to unlink everthing in the homedirectory
 # find . -maxdepth 1 -type l -exec unlink {} \;
 
