@@ -239,6 +239,76 @@
 ;;   (add-hook 'yas-minor-mode-hook (lambda ()
 ;;                                    (yas-activate-extra-mode 'fundamental-mode))))
 
+;; ;; Tree-sitter
+;; (dolist  (mapping '((python-mode . python-ts-mode)
+;; 		      (ruby-mode . ruby-ts-mode)
+;; 		      (c-mode . c-ts-mode)
+;; 		      (c++-mode . c++-ts-mode)
+;; 		      (c-or-c++-mode . c-or-c++-ts-mode)
+;; 		      (css-mode . css-ts-mode)
+;; 		      (js-mode . js-ts-mode)
+;; 		      (javascript-mode . js-ts-mode)
+;; 		      (typescript-mode . tsx-ts-mode)
+;; 		      (js-json-mode . json-ts-mode)
+;; 		      (sh-mode . bash-ts-mode)))
+;;   (add-to-list 'major-mode-remap-alist mapping))
+
+;; (use-package tree-sitter
+;;   :straight t
+;;   :defer t
+;;   :delight " tree"
+;;   :hook ((tuareg-mode-hook zig-mode-hook) . (lambda ()
+;; 					      (tree-sitter-mode)
+;; 					      (tree-sitter-hl-mode))))
+;; (use-package tree-sitter-langs
+;;   :straight t
+;;   :defer t)
+
+;; (use-package treesit
+;;     :commands (treesit-install-language-grammar nf/treesit-install-all-languages)
+;;   :init
+;;   (setq treesit-language-source-alist
+;;    '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+;;      (c . ("https://github.com/tree-sitter/tree-sitter-c"))
+;;      (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
+;;      (css . ("https://github.com/tree-sitter/tree-sitter-css"))
+;;      (go . ("https://github.com/tree-sitter/tree-sitter-go"))
+;;      (html . ("https://github.com/tree-sitter/tree-sitter-html"))
+;;      (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
+;;      (json . ("https://github.com/tree-sitter/tree-sitter-json"))
+;;      (julia . ("https://github.com/tree-sitter/tree-sitter-julia"))
+;;      (lua . ("https://github.com/Azganoth/tree-sitter-lua"))
+;;      (make . ("https://github.com/alemuller/tree-sitter-make"))
+;;      (ocaml . ("https://github.com/tree-sitter/tree-sitter-ocaml" "master" "ocaml/src"))
+;;      (python . ("https://github.com/tree-sitter/tree-sitter-python"))
+;;      (php . ("https://github.com/tree-sitter/tree-sitter-php"))
+;;      (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+;;      (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+;;      (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby"))
+;;      (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
+;;      (sql . ("https://github.com/m-novikov/tree-sitter-sql"))
+;;      (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
+;;      (zig . ("https://github.com/GrayJack/tree-sitter-zig"))))
+;;   :config
+;;   (defun nf/treesit-install-all-languages ()
+;;     "Install all languages specified by `treesit-language-source-alist'."
+;;     (interactive)
+;;     (let ((languages (mapcar 'car treesit-language-source-alist)))
+;;       (dolist (lang languages)
+;; 	      (treesit-install-language-grammar lang)
+;; 	      (message "`%s' parser was installed." lang)
+;; 	      (sit-for 0.75)))))
+
+;;(use-package combobulate
+;;  :straight t
+;;  :defer t
+;;  :hook ((python-ts-mode-hook . combobulate-mode)
+;;        (js-ts-mode-hook . combobulate-mode)
+;;         (css-ts-mode-hook . combobulate-mode)
+;;         (yaml-ts-mode-hook . combobulate-mode)
+;;         (typescript-ts-mode-hook . combobulate-mode)
+;;         (tsx-ts-mode-hook . combobulate-mode)))
+
 ;; (defun efs/lsp-mode-setup ()
 ;;   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
 ;;   (lsp-headerline-breadcrumb-mode))
@@ -266,12 +336,42 @@
 ;; (use-package lsp-ivy
 ;;   :straight t)
 
-(use-package lsp-pyright
-  :straight t
-  :after (python lsp-mode)
-  :hook
-  (python-mode . (lambda ()
-            (require 'lsp-pyright) (lsp))))
+;; (use-package lsp-pyright
+;;   :straight t
+;;   :after (python lsp-mode)
+;;   :hook
+;;   (python-mode . (lambda ()
+;;             (require 'lsp-pyright) (lsp-mode))))
+
+;; Windows issue?
+;; (setq python-shell-completion-native-disabled-interpreters '("python"))
+;; Emacs 27+ issue fixed at some point?
+;; https://github.com/doomemacs/doomemacs/issues/3269
+
+;; (defun project-root (project)
+;;     (car (project-roots project)))
+
+;; (use-package eglot
+;;   :straight t
+;;   :bind (:map eglot-mode-map
+;;               ("C-c l a" . eglot-code-actions)
+;;               ("C-c l r" . eglot-rename)
+;;               ("C-c l f" . eglot-format)
+;;               ("C-c l d" . eldoc))
+;;   :defer t
+;;   :config
+;;   (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver")))
+;;   ;; (add-to-list 'eglot-server-programs
+;;   ;;              `(python-mode
+;;   ;;                . ,(eglot-alternatives '("pylsp"
+;;   ;;                                         "jedi-language-server"
+;;   ;;                                         ("pyright-langserver" "--stdio")))))
+;;   (setq eglot-autoshutdown t)
+;;   (setq debug-on-error t) 
+;;   ;; :hook (python-mode . eglot)
+;;   :commands eglot
+;;   )
+
 
 ;; Provide drop-down completion.
 (use-package company
@@ -282,18 +382,6 @@
          (text-mode . company-mode)
          (prog-mode . company-mode)))
 
-(use-package eglot
-  :straight t
-  :bind (:map eglot-mode-map
-              ("C-c l a" . eglot-code-actions)
-              ("C-c l r" . eglot-rename)
-              ("C-c l f" . eglot-format)
-              ("C-c l d" . eldoc))
-  :defer t
-  :config
-  (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
-  :hook (python-mode . eglot-ensure))
-
 (use-package typescript-mode
   :straight t
   :mode "\\.ts\\'"
@@ -301,21 +389,21 @@
   :config
   (setq typescript-indent-level 2))
 
-;; (use-package company
-;;   :straight t
-;;   :after lsp-mode
-;;   :hook (lsp-mode . company-mode)
-;;   :bind (:map company-active-map
-;;          ("<tab>" . company-complete-selection))
-;;         (:map lsp-mode-map
-;;          ("<tab>" . company-indent-or-complete-common))
-;;   :custom
-;;   (company-minimum-prefix-length 1)
-;;   (company-idle-delay 0.0))
+(use-package company
+  :straight t
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+         ("<tab>" . company-complete-selection))
+        (:map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
 
-;; (use-package company-box
-;;   :straight t
-;;   :hook (company-mode . company-box-mode))
+(use-package company-box
+  :straight t
+  :hook (company-mode . company-box-mode))
 
 (use-package evil-nerd-commenter
   :straight t
