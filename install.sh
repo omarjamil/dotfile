@@ -39,3 +39,6 @@ echo "brew install jesseduffield/lazygit/lazygit"
 
 echo "To install neovim"
 echo "curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage && chmod u+x nvim.appimage"
+echo "To install fzf"
+echo "git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf"
+echo "~/.fzf/install"
