@@ -182,28 +182,16 @@
   :config
   (counsel-mode 1))
 
-(use-package helpful
-  :straight t
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
-
-(use-package hydra
-  :straight t)
-
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("j" text-scale-increase "in")
-  ("k" text-scale-decrease "out")
-  ("f" nil "finished" :exit t))
-
-(rune/leader-keys
-  "ts" '(hydra-text-scale/body :which-key "scale text"))
+;; (use-package helpful
+;;   :straight t
+;;   :custom
+;;   (counsel-describe-function-function #'helpful-callable)
+;;   (counsel-describe-variable-function #'helpful-variable)
+;;   :bind
+;;   ([remap describe-function] . counsel-describe-function)
+;;   ([remap describe-command] . helpful-command)
+;;   ([remap describe-variable] . counsel-describe-variable)
+;;   ([remap describe-key] . helpful-key))
 
 (use-package linum-relative
   :straight t
@@ -344,7 +332,7 @@
 ;;             (require 'lsp-pyright) (lsp-mode))))
 
 ;; Windows issue?
-;; (setq python-shell-completion-native-disabled-interpreters '("python"))
+(setq python-shell-completion-native-disabled-interpreters '("python"))
 ;; Emacs 27+ issue fixed at some point?
 ;; https://github.com/doomemacs/doomemacs/issues/3269
 
@@ -451,58 +439,6 @@
   :hook
   (prog-mode-hook . flycheck-mode))
 
-(use-package org
-  :straight t
-  ;:hook (org-mode . efs/org-mode-setup)
-  :config
-  (setq org-ellipsis " ▾")
-
-  (setq org-agenda-start-with-log-mode t)
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer t)
-
-  (require 'org-habit)
-  (add-to-list 'org-modules 'org-habit)
-  (setq org-habit-graph-column 60)
-
-  (setq org-todo-keywords
-    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-      (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
-
-   ;; Save Org buffers after refiling!
-  (advice-add 'org-refile :after 'org-save-all-org-buffers)
-
-  (setq org-tag-alist
-    '((:startgroup)
-       ; Put mutually exclusive tags here
-       (:endgroup)
-       ("@errand" . ?E)
-       ("@home" . ?H)
-       ("@work" . ?W)
-       ("agenda" . ?a)
-       ("planning" . ?p)
-       ("publish" . ?P)
-       ("batch" . ?b)
-       ("note" . ?n)
-       ("idea" . ?i)))
-
-  (define-key global-map (kbd "C-c j")
-    (lambda () (interactive) (org-capture nil "jj")))
-)
-
-(org-babel-do-load-languages
-  'org-babel-load-languages
-  '((emacs-lisp . t)
-    (python . t)))
-
-(push '("conf-unix" . conf-unix) org-src-lang-modes)
-
-;; (require 'org-tempo)
-
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("py" . "src python :result output"))
-
 (use-package web-mode
   :straight t
   )
@@ -548,3 +484,14 @@
   :hook
   (python-mode . semantic-mode))
   
+(use-package copilot
+  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :config
+  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+  )
+
+(use-package evil-multiedit
+  :straight t
+  :config
+  (evil-multiedit-default-keybinds))
