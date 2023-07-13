@@ -7,11 +7,11 @@ alias d='dirs -v | head -10'
 alias ,grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 alias paraview='/Applications/ParaView-5.10.0.app/Contents/MacOS/paraview'
 # Use colors in coreutils utilities output
-alias ls='ls -GF'
+alias ls='ls -GF --color'
 # ls aliases
-alias ll='ls -lah'
-alias la='ls -A'
-alias l='ls'
+alias ll='ls -lah --color'
+alias la='ls -A --color'
+alias l='ls --color'
 
 # Aliases to protect against overwriting
 alias cp='cp -i'
