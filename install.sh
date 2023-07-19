@@ -20,6 +20,15 @@ ln -s ~/dotfiles/nvim ~/.config/nvim
 ln -s ~/dotfiles/emacs ~/.emacs
 ln -s ~/dotfiles/emacs.d ~/.emacs.d
 
+echo "Installing fzf"
+git clone --depth 1 https://github.com/junegunn/fzf.git
+ln -s ~/dotfiles/fzf ~/.fzf
+
+echo "Installing Homebrew"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+echo "To install lazygit"
+echo "brew install jesseduffield/lazygit/lazygit"
 
 echo "To install neovim"
 echo "curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage && chmod u+x nvim.appimage"
