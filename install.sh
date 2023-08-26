@@ -20,9 +20,15 @@ ln -s ~/dotfiles/nvim ~/.config/nvim
 ln -s ~/dotfiles/emacs ~/.emacs
 ln -s ~/dotfiles/emacs.d ~/.emacs.d
 
+echo "installing zinit"
+bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+
+echo "installing zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+
 echo "Installing fzf"
-git clone --depth 1 https://github.com/junegunn/fzf.git
-ln -s ~/dotfiles/fzf ~/.fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.local/fzf
+~/.local/fzf/install 
 
 echo "Installing Homebrew"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
