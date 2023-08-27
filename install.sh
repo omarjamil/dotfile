@@ -19,6 +19,7 @@ ln -s ~/dotfiles/tmux.conf ~/.tmux.conf
 ln -s ~/dotfiles/nvim ~/.config/nvim
 ln -s ~/dotfiles/emacs ~/.emacs
 ln -s ~/dotfiles/emacs.d ~/.emacs.d
+ln -s ~/dotfiles/zsh/p10k.zsh ~/.p10k.zsh
 
 echo "installing zinit"
 bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
