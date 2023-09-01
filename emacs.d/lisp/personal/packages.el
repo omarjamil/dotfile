@@ -214,8 +214,8 @@
   (setf linum-relative-format "%3s "
         linum-relative-current-symbol ""))
 
-(use-package org
-  :straight t)
+;; (use-package org
+;;   :straight t)
 
 ;; (use-package yasnippet
 ;;   :straight t 
@@ -332,7 +332,7 @@
 ;;             (require 'lsp-pyright) (lsp-mode))))
 
 ;; Windows issue?
-(setq python-shell-completion-native-disabled-interpreters '("python"))
+;; (setq python-shell-completion-native-disabled-interpreters '("python"))
 ;; Emacs 27+ issue fixed at some point?
 ;; https://github.com/doomemacs/doomemacs/issues/3269
 
@@ -484,12 +484,12 @@
   :hook
   (python-mode . semantic-mode))
   
-(use-package copilot
-  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-  :config
-  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-  )
+;; (use-package copilot
+;;   :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+;;   :config
+;;   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+;;   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+;;   )
 
 (use-package evil-multiedit
   :straight t
