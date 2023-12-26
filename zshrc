@@ -93,7 +93,7 @@ zinit light-mode for \
 ### End of Zinit's installer chunk
 
 # zsh-autosuggestions
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 # auto complete
 zinit light zsh-users/zsh-completions
 # syntax highlight

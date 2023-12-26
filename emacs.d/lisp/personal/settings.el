@@ -61,3 +61,5 @@
     " ")))
 (setq eshell-prompt-function 'shk-eshell-prompt)
 (setq eshell-highlight-prompt nil)
+
+(set-frame-font "Fira Code")

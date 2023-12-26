@@ -19,7 +19,8 @@ alias mv='mv -i'
 
 # git related aliases
 alias gag='git exec ag'
-alias e='emacs -nw'
+alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs-arm64-11'
+alias e='/Applications/Emacs.app/Contents/MacOS/Emacs-arm64-11 -nw'
 alias ec='emacsclient'
 alias emacs_server='emacs --daemon'
 alias ekill='emacsclient  -e "(save-buffers-kill-emacs)"'
