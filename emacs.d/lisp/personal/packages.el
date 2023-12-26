@@ -221,7 +221,7 @@
   :straight t
 
   :custom
-  (org-roam-directory "~/Notes")
+  (org-roam-directory "~/notes_orgroam")
   (org-roam-completion-everywhere t)
 
   :bind (("C-c n l" . org-roam-buffer-toggle)
