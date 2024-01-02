@@ -20,7 +20,7 @@
   :straight t
   
   :init
-  (setf evil-want-C-u-scroll t)
+  ; (setf evil-want-C-u-scroll t)
   (setf evil-want-fine-undo t)
   (setf evil-want-abbrev-expand-on-insert-exit nil)
 
@@ -360,8 +360,8 @@
   )
 
 ;; (use-package docker-tramp
-;;   :straight t
-;;   )
+;;    :straight t
+;;    )
 
 (use-package eshell
   :straight t
@@ -377,13 +377,6 @@
 	 (if (= (user-uid) 0) "# " "$ "))))
   )
  
-;; (use-package copilot
-;;   :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-;;   :config
-;;   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-;;   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-;;   )
-
 (use-package evil-multiedit
   :straight t
   :config
@@ -407,3 +400,23 @@
                                        "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
 
   (global-ligature-mode 't))
+
+(use-package gptel
+  :straight t
+  :config 
+  (global-set-key (kbd "C-c RET") 'gptel-send))
+
+(use-package popper
+  :straight t
+  :bind (("C-x p `"   . popper-toggle)
+         ("M-`"   . popper-cycle)
+         ("C-x p t" . popper-toggle-type))
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "Output\\*$"
+          "\\*Async Shell Command\\*"
+          help-mode
+          compilation-mode))
+  (popper-mode +1)
+  (popper-echo-mode +1))                ; For echo area hints
