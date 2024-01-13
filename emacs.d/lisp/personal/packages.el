@@ -215,7 +215,9 @@
         linum-relative-current-symbol ""))
 
 (use-package org
-  :straight t)
+  :straight t
+  :config
+  (setq org-src-fontify-natively t))
 
 (use-package org-roam
   :straight t
@@ -275,7 +277,9 @@
 (use-package eglot
   :ensure t
   :defer t
-  :hook (python-mode . eglot-ensure))
+  :hook ((python-mode . eglot-ensure)
+         (tsx-ts-mode . eglot-ensure)
+         (js-ts-mode . eglot-ensure)))
 
 ;; Provide drop-down completion.
 (use-package company
