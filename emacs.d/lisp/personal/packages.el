@@ -120,16 +120,8 @@
     (if (get-buffer undo-tree-visualizer-buffer-name)
         (undo-tree-visualizer-quit)
       (undo-tree-visualize)))
-  (evil-leader/set-key "u" 'undo-tree-visualizer-toggle)
-
-  (evil-leader/set-key-for-mode 'coq-mode
-    "e" 'coq-double-hit-toggle
-    "c" 'proof-interrupt-process)
-
-  (evil-leader/set-key-for-mode 'racket-mode
-    "r" 'racket-run
-    "t" 'racket-test))
-
+  (evil-leader/set-key "u" 'undo-tree-visualizer-toggle))
+ 
 
 (use-package command-log-mode
   :straight t)
